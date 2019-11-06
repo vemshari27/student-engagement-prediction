@@ -1,0 +1,24 @@
+import torch
+import random
+import torchaudio
+
+def readaudio(audioFile):
+    y, sr = torchaudio.load(audioFile)
+    duration = int(len(y)/sr)
+    #print(duration)
+    #print(audioFile)
+    frame = y[:, 0]
+    data = torch.FloatTensor(1,1,50176)
+    start = random.randint(0, (duration*16000)-50176)
+    end = start + 50176
+    data[:, :] = frame[start:end]
+    return data
+
+
+with open('VR_audiodata_list.txt') as fp:
+	lines = fp.readlines()
+	for line in lines:
+		print(line)
+		path = line.split()[0]
+		data = readaudio(path)
+		print(data)
